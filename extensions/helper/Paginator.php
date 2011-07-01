@@ -272,7 +272,7 @@ class Paginator extends \lithium\template\Helper {
 			$this->config($options);
 		}
 		$start = ($this->_page - 4);
-		$end = floor(($this->_total / $this->_limit) + 1);
+		$end = ceil($this->_total / $this->_limit);
 		if ($this->_page <= 4) {
 			$start = 1;
 		}
