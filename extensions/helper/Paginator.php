@@ -157,7 +157,7 @@ class Paginator extends \lithium\template\Helper {
 
 	/**
 	 * Creates the first page link
-	 * 
+	 *
 	 * @see li3_paginate\extensions\helper\Paginator::paginate()
 	 * @return string Markup of the "<< First" page link.
 	 */
@@ -165,7 +165,7 @@ class Paginator extends \lithium\template\Helper {
 		if (!empty($options)) {
 			$this->config($options);
 		}
-		
+
 		if ($this->_page > 1) {
 			$config = array(
 				'page' => 1
@@ -236,7 +236,7 @@ class Paginator extends \lithium\template\Helper {
 
 	/**
 	 * Creates the last page link
-	 * 
+	 *
 	 * @see li3_paginate\extensions\helper\Paginator::paginate()
 	 * @return string Markup of the "Last >>" page link.
 	 */
@@ -244,7 +244,7 @@ class Paginator extends \lithium\template\Helper {
 		if (!empty($options)) {
 			$this->config($options);
 		}
-		$end = floor(($this->_total / $this->_limit) + 1);
+		$end = ceil(($this->_total / $this->_limit));
 		if ($end > $this->_page) {
 			$config = array(
 				'page' => $end
@@ -262,7 +262,7 @@ class Paginator extends \lithium\template\Helper {
 	}
 
 	/**
-	 * Creates the individual numeric page links, with hte current link in the middle.
+	 * Creates the individual numeric page links, with the current link in the middle.
 	 *
 	 * @see li3_paginate\extensions\helper\Paginator::paginate()
 	 * @return string Markup of the numeric page links.
