@@ -167,9 +167,7 @@ class Paginator extends \lithium\template\Helper {
 		}
 
 		if ($this->_page > 1) {
-			$config = array(
-				'page' => 1
-			);
+			$config = array('page' => 1) + $this->_query();
 
 			$url = \lithium\net\http\Router::match(
 				$config + $this->_context->_config['request']->params,
@@ -193,9 +191,7 @@ class Paginator extends \lithium\template\Helper {
 			$this->config($options);
 		}
 		if ($this->_page > 1) {
-			$config = array(
-				'page' => ($this->_page - 1)
-			);
+			$config = array('page' => ($this->_page - 1)) + $this->_query();
 
 			$url = \lithium\net\http\Router::match(
 				$config + $this->_context->_config['request']->params,
@@ -219,9 +215,7 @@ class Paginator extends \lithium\template\Helper {
 			$this->config($options);
 		}
 		if ($this->_total > ($this->_limit * $this->_page)) {
-			$config = array(
-				'page' => ($this->_page + 1)
-			);
+			$config = array('page' => ($this->_page + 1)) + $this->_query();
 
 			$url = \lithium\net\http\Router::match(
 				$config + $this->_context->_config['request']->params,
@@ -246,9 +240,7 @@ class Paginator extends \lithium\template\Helper {
 		}
 		$end = ceil(($this->_total / $this->_limit));
 		if ($end > $this->_page) {
-			$config = array(
-				'page' => $end
-			);
+			$config = array('page' => $end) + $this->_query();
 
 			$url = \lithium\net\http\Router::match(
 				$config + $this->_context->_config['request']->params,
@@ -285,7 +277,7 @@ class Paginator extends \lithium\template\Helper {
 			'action' => $this->_action
 		);
 		for ($i = $start; $i <= $end; $i++) {
-			$config = array('page' => $i);
+			$config = array('page' => $i) + $this->_query();
 			$url = \lithium\net\http\Router::match(
 				$config + $this->_context->_config['request']->params,
 				$this->_context->_config['request'],
@@ -342,6 +334,15 @@ class Paginator extends \lithium\template\Helper {
 
 	public function config(array $options = array()) {
 		$this->_config = array_replace($this->_config, $options);
+	}
+
+	protected function _query() {
+		$params = $this->_context->_config['request']->query;
+		if (count($params) > 1) {
+			unset($params['url']);
+			return array('?' => $params);
+		}
+		return array();
 	}
 
 }
