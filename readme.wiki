@@ -12,6 +12,11 @@ in `\app\config\routes.php`. However you decide to do this, you will be required
  * An example route for pagination.
  */
 Router::connect('/{:controller}/{:action}/page:{:page:[0-9]+}');
+
+/**
+ * Another example route for pagination allowing arguments to be passed.
+ */
+Router::connect('/{:controller}/{:action}/page:{:page:[0-9]+}/{:args}');
 }}}
 
 You may also be required (if you're lazy like me) to either extend the plugin:
