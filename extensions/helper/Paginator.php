@@ -18,6 +18,17 @@ namespace li3_paginate\extensions\helper;
 class Paginator extends \lithium\template\Helper {
 
 	/**
+	 * Library string used by this helper to create next/prev & page links.
+	 *
+	 * This string is representative of the name of the current library,
+	 * it is fetched during _init() via $this->_context.
+	 *
+	 * @var string
+	 * @see li3_paginate\extensions\helper\Paginator::_init()
+	 */
+	protected $_library = null;
+	
+	/**
 	 * Controller string used by this helper to create next/prev & page links.
 	 *
 	 * This string is representative of the name of the current controller,
@@ -148,6 +159,7 @@ class Paginator extends \lithium\template\Helper {
 	protected function _init() {
 		parent::_init();
 		// setting up the _config array for use in links etc. with our string templates
+		$this->_controller = isset($this->_context->_config['request']->params['library']) ? $this->_context->_config['request']->params['library']:null;
 		$this->_controller = $this->_context->_config['request']->params['controller'];
 		$this->_action = $this->_context->_config['request']->params['action'];
 		$this->_page = ($this->_context->_config['data']['page'] + 0) ?: 1;
@@ -174,6 +186,10 @@ class Paginator extends \lithium\template\Helper {
 				$this->_context->_config['request'],
 				array('absolute' => true)
 			);
+			
+			if(!empty($this->_library)) {
+				$url['library'] = $this->_library;
+			}
 
 			return $this->_context->html->link($this->_config['firstText'], $url);
 		}
@@ -198,6 +214,10 @@ class Paginator extends \lithium\template\Helper {
 				$this->_context->_config['request'],
 				array('absolute' => true)
 			);
+			
+			if(!empty($this->_library)) {
+				$url['library'] = $this->_library;
+			}
 
 			return $this->_context->html->link($this->_config['prevText'], $url);
 		}
@@ -222,6 +242,10 @@ class Paginator extends \lithium\template\Helper {
 				$this->_context->_config['request'],
 				array('absolute' => true)
 			);
+			
+			if(!empty($this->_library)) {
+				$url['library'] = $this->_library;
+			}
 
 			return $this->_context->html->link($this->_config['nextText'], $url);
 		}
@@ -247,6 +271,10 @@ class Paginator extends \lithium\template\Helper {
 				$this->_context->_config['request'],
 				array('absolute' => true)
 			);
+			
+			if(!empty($this->_library)) {
+				$url['library'] = $this->_library;
+			}
 
 			return $this->_context->html->link($this->_config['lastText'], $url);
 		}
@@ -272,10 +300,16 @@ class Paginator extends \lithium\template\Helper {
 			$end = ($this->_page + 4);
 		}
 		$buffer = "";
+		
 		$url = array(
 			'controller' => $this->_controller,
 			'action' => $this->_action
 		);
+		
+		if(!empty($this->_library)) {
+			$url['library'] = $this->_library;
+		}
+		
 		for ($i = $start; $i <= $end; $i++) {
 			$config = array('page' => $i) + $this->_query();
 			$url = \lithium\net\http\Router::match(
@@ -307,7 +341,8 @@ class Paginator extends \lithium\template\Helper {
 		if (!empty($options)) {
 			$this->config($options);
 		}
-
+		
+		$this->_library = (empty($this->_config['library']) && isset($this->_context->_config['request']->params['library'])) ? $this->_context->_config['request']->params['library'] : $this->_config['library'];
 		$this->_controller = (empty($this->_config['controller'])) ? $this->_context->_config['request']->params['controller'] : $this->_config['controller'];
 		$this->_action = (empty($this->_config['action'])) ? $this->_context->_config['request']->params['action'] : $this->_config['action'];
 		$content = "";
