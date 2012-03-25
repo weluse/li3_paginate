@@ -7,17 +7,11 @@ In order to make use of this plugin as is, you will need to include or allow a s
 in `\app\config\routes.php`. However you decide to do this, you will be required to include the `:controller`,
 `:action` and `:page` slugs.
 
-{{{
-/**
- * An example route for pagination.
- */
-Router::connect('/{:controller}/{:action}/page:{:page:[0-9]+}');
+#### An example route for pagination.
+`Router::connect('/{:controller}/{:action}/page:{:page:[0-9]+}');`
 
-/**
- * Another example route for pagination allowing arguments to be passed.
- */
-Router::connect('/{:controller}/{:action}/page:{:page:[0-9]+}/{:args}');
-}}}
+#### Another example route for pagination allowing arguments to be passed.
+`Router::connect('/{:controller}/{:action}/page:{:page:[0-9]+}/{:args}');`
 
 You may also be required (if you're lazy like me) to either extend the plugin:
 
@@ -35,9 +29,8 @@ class YourExtensionName extends \app\libraries\li3_paginate\extensions\helper\Pa
 
 Alternatively you could include this plugin directly in your `\app\config\bootstrap\libraries.php`:
 
-{{{
-Libraries::add('li3_paginate');
-}}}
+`Libraries::add('li3_paginate');`
+
 
 You will also be required to configure your controller action such that the following 3 variables are set namely:
 `$limit`, `$page` and `$total` as explained below.
