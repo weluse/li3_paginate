@@ -115,8 +115,6 @@ class Paginator extends \lithium\template\Helper {
 	 *        - `'prevTextDisabled'`: Overrides markup used for "< Prev" anchor tag when on first page.
 	 *        - `'nextTextDisabled'`: Overrides markup used for "Next >" anchor tag when on last page.
 	 *        - `'lastTextDisabled'`: Overrides markup used for "Last >>" anchor tag when on last page.
-	 *        - `'separator'`: Overrides separator used between "< Prev" and "Next >" and numeric page links.
-	 *        - `'separatorFirstLast'`: Overrides separator used between "<< First" and "< Prev" as well as between "Next >" and "Last >>".
 	 *        - `'activePageStyle'`: Sets the style to be used on the active numeric page link.
  	 *        - `'activePageClass'`: Sets the class to be used on the active numeric page link.
 	 * @return object An instance of the Paginator class being constructed.
@@ -134,9 +132,6 @@ class Paginator extends \lithium\template\Helper {
 			'nextTextDisabled' => "",
 			'lastText' => "Last >>",
             'lastTextDisabled' => "",
-			'separator' => "",
-			'separatorFirstLast' => "",
-			'activePageStyle' => "font-weight:bold;",
 			'activeOpenTag' => '<li class="active">',
 			'openTag' => "<li>",
 			'closeTag' => "</li>",
