@@ -140,6 +140,7 @@ class Paginator extends \lithium\template\Helper {
 			'activePageClass' => "active",
 			'openTag' => "",
 			'closeTag' => "",
+			'library' => null,
 			'controller' => "",
 			'action' => ""
 
