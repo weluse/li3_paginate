@@ -1,7 +1,7 @@
 The Lithium pagination plugin (Li3 Paginate) is a helper designed to make the pagination of records easier within
 the Lithium framework.
 
-### Requirements
+## Requirements
 
 In order to make use of this plugin as is, you will need to include or allow a specific route
 in `\app\config\routes.php`. However you decide to do this, you will be required to include the `:controller`,
@@ -25,7 +25,7 @@ class YourExtensionName extends \app\libraries\li3_paginate\extensions\helper\Pa
 }
 }}}
 
-### Possibly a bad idea ...
+## Possibly a bad idea ...
 
 Alternatively you could include this plugin directly in your `\app\config\bootstrap\libraries.php`:
 
@@ -35,10 +35,8 @@ Alternatively you could include this plugin directly in your `\app\config\bootst
 You will also be required to configure your controller action such that the following 3 variables are set namely:
 `$limit`, `$page` and `$total` as explained below.
 
-{{{
-/**
- * An example of how to set the variables within your controller action.
- */
+
+#### An example of how to set the variables within your controller action.
 class UsersController extends \lithium\action\Controller {
 
 	public function index() {
@@ -51,26 +49,24 @@ class UsersController extends \lithium\action\Controller {
 	}
 
 }
-}}}
 
-### View / Template
+
+## View / Template
 
 Now all you have to do to make use of the standard paginator class within your templates/views is:
 
-{{{
-<?=$this->Paginator->paginate();?>
-}}}
+`<?=$this->Paginator->paginate();?>`
 
-### Advanced Settings & Overrides
+
+## Advanced Settings & Overrides
 
 It's possible to override configuration setting options like so:
 
-{{{
-<?=$this->Paginator->paginate(array('separator' => ' : '));?>
-// or
-<?=$this->Paginator->config(array('separator' => ' : '));?>
-<?=$this->Paginator->paginate();?>
-}}}
+`<?=$this->Paginator->paginate(array('separator' => ' : '));?>`
+or
+`<?=$this->Paginator->config(array('separator' => ' : '));?>
+<?=$this->Paginator->paginate();?>`
+
 
 Note: The configuration options are sticky so once set it will apply to all paginate method calls.
 
@@ -78,10 +74,8 @@ If you want to specify an opening and closing tag for each paginate element it c
 
 Custom URLs can be configured by setting the controller and action settings like so: 
 
-{{{
-<?=$this->Paginator->paginate(array('controller' => 'foo', 'action' => 'bar'));?>
-}}}
+`<?=$this->Paginator->paginate(array('controller' => 'foo', 'action' => 'bar'));?>`
 
-will force the generated url to /foo/bar/page:1
+will force the generated url to `/foo/bar/page:1`
 
 Enjoy. Peace.
