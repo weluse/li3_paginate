@@ -162,9 +162,9 @@ class Paginator extends \lithium\template\Helper {
 		$this->_controller = isset($this->_context->_config['request']->params['library']) ? $this->_context->_config['request']->params['library']:null;
 		$this->_controller = $this->_context->_config['request']->params['controller'];
 		$this->_action = $this->_context->_config['request']->params['action'];
-		$this->_page = ($this->_context->_config['data']['paging']['page'] + 0) ?: 1;
-		$this->_total = $this->_context->_config['data']['paging']['total'];
-		$this->_limit = $this->_context->_config['data']['paging']['limit'];
+		$this->_page = ($this->_context->_config['data']['page'] + 0) ?: 1;
+		$this->_total = $this->_context->_config['data']['total'];
+		$this->_limit = $this->_context->_config['data']['limit'];
 	}
 
 	/**
