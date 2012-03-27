@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -92,7 +92,7 @@ class Paginator extends \lithium\template\Helper {
 	 * @see li3_paginate\extensions\helper\Paginator::paginate()
 	 */
 	protected $_strings = array(
-		'pagingWrapper'	=> '<div>{:content}</div>'
+		'pagingWrapper'	=> '<ul>{:content}</ul>'
 	);
 
 	/**
@@ -115,8 +115,6 @@ class Paginator extends \lithium\template\Helper {
 	 *        - `'prevTextDisabled'`: Overrides markup used for "< Prev" anchor tag when on first page.
 	 *        - `'nextTextDisabled'`: Overrides markup used for "Next >" anchor tag when on last page.
 	 *        - `'lastTextDisabled'`: Overrides markup used for "Last >>" anchor tag when on last page.
-	 *        - `'separator'`: Overrides separator used between "< Prev" and "Next >" and numeric page links.
-	 *        - `'separatorFirstLast'`: Overrides separator used between "<< First" and "< Prev" as well as between "Next >" and "Last >>".
 	 *        - `'activePageStyle'`: Sets the style to be used on the active numeric page link.
  	 *        - `'activePageClass'`: Sets the class to be used on the active numeric page link.
 	 * @return object An instance of the Paginator class being constructed.
@@ -127,19 +125,17 @@ class Paginator extends \lithium\template\Helper {
 			'showPrevNext' => true,
 			'showNumbers' => true,
 			'firstText' => "<< First",
-            'firstTextDisabled' => "<< First",
+            'firstTextDisabled' => "",
 			'prevText' => "< Prev",
-			'prevTextDisabled' => "< Prev",
+			'prevTextDisabled' => "",
 			'nextText' => "Next >",
-			'nextTextDisabled' => "Next >",
+			'nextTextDisabled' => "",
 			'lastText' => "Last >>",
-            'lastTextDisabled' => "Last >>",
-			'separator' => " | ",
-			'separatorFirstLast' => " ",
-			'activePageStyle' => "font-weight:bold;",
-			'activePageClass' => "active",
-			'openTag' => "",
-			'closeTag' => "",
+            'lastTextDisabled' => "",
+			'activeOpenTag' => '<li class="active">',
+			'openTag' => "<li>",
+			'closeTag' => "</li>",
+			'library' => null,
 			'controller' => "",
 			'action' => ""
 
@@ -159,7 +155,7 @@ class Paginator extends \lithium\template\Helper {
 	protected function _init() {
 		parent::_init();
 		// setting up the _config array for use in links etc. with our string templates
-		$this->_controller = isset($this->_context->_config['request']->params['library']) ? $this->_context->_config['request']->params['library']:null;
+		$this->_library = isset($this->_context->_config['request']->params['library']) ? $this->_context->_config['request']->params['library']:null;
 		$this->_controller = $this->_context->_config['request']->params['controller'];
 		$this->_action = $this->_context->_config['request']->params['action'];
 		$this->_page = ($this->_context->_config['data']['page'] + 0) ?: 1;
@@ -191,7 +187,7 @@ class Paginator extends \lithium\template\Helper {
 				$url['library'] = $this->_library;
 			}
 
-			return $this->_context->html->link($this->_config['firstText'], $url);
+			return $this->_config['openTag'].$this->_context->html->link($this->_config['firstText'], $url).$this->_config['closeTag'];
 		}
 		return $this->_config['firstTextDisabled'];
 	}
@@ -219,7 +215,7 @@ class Paginator extends \lithium\template\Helper {
 				$url['library'] = $this->_library;
 			}
 
-			return $this->_context->html->link($this->_config['prevText'], $url);
+			return $this->_config['openTag'].$this->_context->html->link($this->_config['prevText'], $url).$this->_config['closeTag'];
 		}
 		return $this->_config['prevTextDisabled'];
 	}
@@ -247,7 +243,7 @@ class Paginator extends \lithium\template\Helper {
 				$url['library'] = $this->_library;
 			}
 
-			return $this->_context->html->link($this->_config['nextText'], $url);
+			return $this->_config['openTag'].$this->_context->html->link($this->_config['nextText'], $url).$this->_config['closeTag'];
 		}
 		return $this->_config['nextTextDisabled'];
 	}
@@ -276,7 +272,7 @@ class Paginator extends \lithium\template\Helper {
 				$url['library'] = $this->_library;
 			}
 
-			return $this->_context->html->link($this->_config['lastText'], $url);
+			return $this->_config['openTag'].$this->_context->html->link($this->_config['lastText'], $url).$this->_config['closeTag'];
 		}
 		return $this->_config['lastTextDisabled'];
 	}
@@ -318,9 +314,9 @@ class Paginator extends \lithium\template\Helper {
 				array('absolute' => true)
 			);
 			if ($this->_page == $i) {
-				$buffer .= $this->_config['separator'].$this->_context->html->link($i, $url, array('style' => $this->_config['activePageStyle']));
+				$buffer .= $this->_config['activeOpenTag'].$this->_context->html->link($i, $url).$this->_config['closeTag'];
 			} else {
-				$buffer .= $this->_config['separator'].$this->_config['openTag'].$this->_context->html->link($i, $url).$this->_config['closeTag'];
+				$buffer .= $this->_config['openTag'].$this->_context->html->link($i, $url).$this->_config['closeTag'];
 			}
 		}
 		return $buffer;
@@ -349,18 +345,15 @@ class Paginator extends \lithium\template\Helper {
 		if ($this->_config["showFirstLast"]) {
             $content .= $this->first();
         }
-		$content .= $this->_config['separatorFirstLast'];
 		if ($this->_config["showPrevNext"]) {
 			$content .= $this->prev();
 		}
 		if ($this->_config["showNumbers"]) {
 			$content .= $this->numbers();
 		}
-		$content .= $this->_config['separator'];
 		if ($this->_config["showPrevNext"]) {
 			$content .= $this->next();
 		}
-		$content .= $this->_config['separatorFirstLast'];
 		if ($this->_config["showFirstLast"]) {
             $content .= $this->last();
         }
